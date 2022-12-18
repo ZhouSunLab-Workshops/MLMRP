@@ -1,6 +1,5 @@
-load("Data.Rdata")
-
 #1.lncRNA DE expression
+load("1.Rdata")
 library(DESeq2)
 
 lncRNA_dds=DESeqDataSetFromMatrix(countData = train_count, 
@@ -76,6 +75,7 @@ table(cluster, annotation_col$tissue_type)
 dev.off()
 
 # 2.Feature selection
+load("2.Rdata")
 library(caret)
 
 ## 2.1 Remove Zero- and Near Zero-Variance Predictors
@@ -208,6 +208,7 @@ p2=treeplot(b2_keggx2)
 aplot::plot_list(p1, p2, tag_levels = 'A', ncol = 1)
 
 # 3. Establishment and verification of a multi-lncRNA diagnostic signature
+load("3.Rdata")
 ## (1) Establishment
 train_signature_TDM=data.frame(train_signature_TDM)
 train_signature_TDM$tissue_type=train_label[rownames(train_signature_TDM), "tissue_type"]
@@ -322,6 +323,7 @@ p=pheatmap(t(data[order(data$score2), c(1, 5, 2, 3, 6, 4)]),
            cluster_rows = F)
 
 # 4. Independent validation of the MLMRPscore
+load("3.Rdata")
 ## (1) You cohort
 GSE130078.score_TDM=predict(logi.model_TDM$finalModel, 
                             newdata = data.frame(GSE130078_signature_TDM), 
@@ -523,6 +525,7 @@ p=pheatmap(t(data[order(data$score2), c(1, 5, 2, 3, 6, 4)]),
            cluster_rows = F)
 
 # 5. Early diagnosis
+load("3.Rdata")
 library(OptimalCutpoints)
 
 ## (1) SCH cohort
